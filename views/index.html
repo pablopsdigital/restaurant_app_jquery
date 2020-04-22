@@ -1,28 +1,173 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-	<meta charset="UTF-8">
-	<title>My Restaurant Admin</title>
 
-	<!--BootstrapCDN-->
-	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
-	<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
-	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<head>
+  <meta charset="UTF-8">
+  <title>My Restaurant Admin</title>
+
+  <!--BootstrapCDN-->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+    integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+    integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+    integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+    crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+    integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+    crossorigin="anonymous"></script>
 
 </head>
+
 <body>
 
-<div class="card">
-	<div class="card-header">
-		<h3>Prueba</h3>
-	</div>
-	<div class="card-body">
-		<div class="row">
-			<h3>Prueba</h3>
+  <!--Navigation-->
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="#">Logotipo</a>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item active">
+          <a class="nav-link" href="#">Reservas<span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="nueva_reserva.html">Nueva Reserva</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+
+  <!--
+	<div class="container mx-auto mt-5">
+
+		Card Reservation Sample
+		<div class="card">
+			<div class="row no-gutters">
+				<div class="col-md-2" style="background: #868e96;">
+					<img src="../src/img/no-image.png" class="card-img-top h-100" alt="...">
+				</div>
+				<div class="col-md-10">
+					<div class="card-body ">
+						<div class="row no-gutters">
+							<div class="col-md-4">
+								<h5>Nombre Cliente</h5>
+								<p>Nombre cliente Nombre cliente</p>
+							</div>
+							<div class="col-md-2">
+								<h5>Télefono</h5>
+								<p class="card-text">986989999</p>
+							</div>
+							<div class="col-md-2">
+								<h5>Fecha y hora</h5>
+								<p class="card-text">13/00/2020 - 13:00</p>
+							</div>
+							<div class="col-md-2">
+								<h5>Comensales</h5>
+								<p>10</p>
+							</div>
+							<div class="col-md-3">
+								<a href="#" class="btn btn-primary stretched-link">View Profile</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
 		</div>
 	</div>
-</div>
+	-->
+
+
+  <!--Tabla Reservas-->
+  <div class="container mt-5">
+    <h2>Listado de reservas</h2>
+    <input class="form-control" id="campoBusqueda" type="text" placeholder="Buscar..">
+    <br>
+    <table class="table table-bordered table-striped">
+      <thead>
+        <tr>
+          <th>Nombre y Apellidos</th>
+          <th>Teléfono</th>
+          <th>Fecha y Hora</th>
+          <th>Comensales</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody id="tablaReservas">
+        <tr>
+          <td>Nombre Apellido1 Apellido 2</td>
+          <td>000000000</td>
+          <td>10/04/2020 - 11:00</td>
+          <td>4</td>
+          <td>
+            <button id="" type="button" class="btn btn-primary" data-toggle="modal"
+              data-target="#modalReserva">Ver</button>
+            <button id="" type="button" class="btn btn-danger">Eliminar</button>
+          </td>
+        </tr>
+        <tr>
+          <td>sdfs Apellido1 Apellido 2</td>
+          <td>000000000</td>
+          <td>10/04/2020 - 11:00</td>
+          <td>4</td>
+          <td>Boton1 Boton 2 Boton3</td>
+        </tr>
+        <tr>
+          <td>as Apellido1 Apellido 2</td>
+          <td>000000000</td>
+          <td>10/04/2020 - 11:00</td>
+          <td>4</td>
+          <td>Boton1 Boton 2 Boton3</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!--Modal edición reserva-->
+  <div id="modalReserva" class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Ficha de la reserva</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p>Formulario reserva</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+          <button type="button" class="btn btn-primary">Guardar Cambios</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <script>
+
+    //Retraso carga
+    $(document).ready(function () {
+
+
+      //Filtrar tabla por campo busqueda
+      $("#campoBusqueda").on("keyup", function () {
+        var value = $(this).val().toLowerCase();
+        $("#tablaReservas tr").filter(function () {
+          $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+        });
+      });
+
+
+
+
+
+    });
+
+
+  </script>
 
 </body>
+
 </html>
