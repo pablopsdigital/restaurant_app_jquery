@@ -2,18 +2,9 @@
 
 require 'conexion.php';
 
-class Persona
+class Reserva
 {
-
-    private $id;
-    private $nombre;
-    private $apellidos;
-    private $telefono;
-    private $fecha;
-    private $hora;
-    private $comensales;
-    private $comentarios;
-
+    
     //====================================================================================================================================
     // Función para almacenar una nueva reserva en la base de datos
     //====================================================================================================================================
