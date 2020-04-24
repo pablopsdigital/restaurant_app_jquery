@@ -4,34 +4,33 @@ require 'conexion.php';
 
 class Reserva
 {
-    
+
     //====================================================================================================================================
     // Función para almacenar una nueva reserva en la base de datos
     //====================================================================================================================================
     public function guardarReserva($nombre, $apellidos, $telefono, $fecha, $hora, $comensales, $comentarios)
     {
-
         //Formato requerido 2020-04-02 14:40:00
-        $fechaHora = new DateTime($fecha->format('Y-m-d') . ' ' . $hora->format('H:i:s'));
+        //$fechaHora = new DateTime($fecha->format('Y-m-d') . ' ' . $hora->format('H:i:s'));
+        $fechaHora = $fecha . " " . $hora;
 
         //Crear la conexion
         $conexion = new Conexion();
-        $statement = $conexion->prepare("INSERT INTO 'reservas'('nombre', 'apellidos', 'telefono', 'fecha', 'comensales', 'comentarios')
-            VALUES(:nombre, :apellidos, :fecha, :comensales, :comentarios);");
+        $statement = $conexion->prepare("INSERT INTO reservas(nombre, apellidos, telefono, fecha, comensales, comentarios)
+            VALUES(:nombre, :apellidos, :telefono, :fecha, :comensales, :comentarios);");
 
         //Se pasan los parametros a la consulta
-        $statement->bindParam(':nombre', $nombre, PDO::PARAM_STR);
-        $statement->bindParam(':apellidos', $apellidos, PDO::PARAM_STR);
-        $statement->bindParam(':telefono', $telefono, PDO::PARAM_STR);
-        $statement->bindParam(':fecha', $fechaHora, PDO::PARAM_STR);           //Se pasa la fecha y hora
-        $statement->bindParam(':comensales', $comensales, PDO::PARAM_INT);
-        $statement->bindParam(':comentarios', $comentarios, PDO::PARAM_STR);
+        $statement->bindValue(':nombre', $nombre, PDO::PARAM_STR);
+        $statement->bindValue(':apellidos', $apellidos, PDO::PARAM_STR);
+        $statement->bindValue(':telefono', $telefono, PDO::PARAM_STR);
+        $statement->bindValue(':fecha', $fechaHora, PDO::PARAM_STR);           //Se pasa la fecha y hora
+        $statement->bindValue(':comensales', $comensales, PDO::PARAM_INT);
+        $statement->bindValue(':comentarios', $comentarios, PDO::PARAM_STR);
 
-        //Se ejecuta la consulta
         if ($statement->execute()) {
             return 'OK';
         } else {
-            return 'Error: Se ha producido un error al actualizar la reserva';
+            return 'Error: Se ha producido un error al eliminar la reserva';
         }
     }
 
@@ -42,27 +41,21 @@ class Reserva
     {
 
         //Formato requerido 2020-04-02 14:40:00
-        $fechaHora = new DateTime($fecha->format('Y-m-d') . ' ' . $hora->format('H:i:s'));
+        //$fechaHora = new DateTime($fecha->format('Y-m-d') . ' ' . $hora->format('H:i:s'));
+        $fechaHora = $fecha . " " . $hora;
 
         //Crear la conexion
         $conexion = new Conexion();
-        $statement = $conexion->prepare("UPDATE 'reservas'
-                                        SET   'nombre' = :nombre, 
-                                              'apellidos'=:apellidos,
-                                              'telefono'=:telefono,
-                                              'fecha'=:fecha,
-                                              'comensales'=:comensales,
-                                              'comentarios'=:comentarios
-                                        WHERE 'id'=:id;");
+        $statement = $conexion->prepare("UPDATE reservas SET nombre=:nombre, apellidos=:apellidos, telefono=:telefono, fecha=:fecha, comensales=:comensales, comentarios=:comentarios WHERE id=:id;");
 
         //Se pasan los parametros a la consulta
+        $statement->bindValue(':id', $id, PDO::PARAM_INT);
         $statement->bindValue(':nombre', $nombre, PDO::PARAM_STR);
         $statement->bindValue(':apellidos', $apellidos, PDO::PARAM_STR);
         $statement->bindValue(':telefono', $telefono, PDO::PARAM_STR);
         $statement->bindValue(':fecha', $fechaHora, PDO::PARAM_STR);
         $statement->bindValue(':comensales', $comensales, PDO::PARAM_INT);
         $statement->bindValue(':comentarios', $comentarios, PDO::PARAM_STR);
-        $statement->bindValue(':id', $id, PDO::PARAM_INT);
 
         //Se ejecuta la consulta
         if ($statement->execute()) {
@@ -80,7 +73,7 @@ class Reserva
 
         //Crear la conexion
         $conexion = new Conexion();
-        $statement = $conexion->prepare("DELETE FROM 'reservas' WHERE 'id'=:id");
+        $statement = $conexion->prepare("DELETE FROM reservas WHERE id=:id");
 
         //Se pasan los parametros a la consulta
         $statement->bindValue(':id', $id, PDO::PARAM_INT);
@@ -101,7 +94,7 @@ class Reserva
 
         //Crear la conexion
         $conexion = new Conexion();
-        $statement = $conexion->prepare("SELECT * FROM 'reservas'");
+        $statement = $conexion->prepare("SELECT * FROM reservas");
         $statement->execute();
 
         return $statement->fetchAll(PDO::FETCH_OBJ);
@@ -129,11 +122,10 @@ class Reserva
 
         //Crear la conexion
         $conexion = new Conexion();
-        $statement = $conexion->prepare("SELECT * FROM 'reservas' WHERE 'id'=:id");
+        $statement = $conexion->prepare("SELECT * FROM reservas WHERE id=:id");
         $statement->bindParam(':id', $id, PDO::PARAM_INT);
         $statement->execute();
 
         return $statement->fetch(PDO::FETCH_OBJ);
     }
-
 }
