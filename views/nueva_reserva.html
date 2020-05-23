@@ -5,11 +5,12 @@
   <meta charset="UTF-8">
   <title>My Restaurant Admin</title>
 
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
   <!--BootstrapCDN-->
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
     integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-  <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
-    integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+  <script src="https://code.jquery.com/jquery-3.5.0.js" integrity="sha256-r/AaFHrszJtwpe+tHyNi/XCfMxYpbsRg2Uqn0x3s2zc="
     crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
     integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
@@ -38,76 +39,75 @@
     </div>
   </nav>
 
+  <div id="resultado"></div>
+
 
   <!--Formulario reservas-->
-  <div class="container mt-5">
-    <div class="card">
-      <div class="card-header">
-        <h3>Gestión de reservas</h3>
-      </div>
-      <div class="card-body">
-        <div class="row">
-          <div class="col-md-4">
-            <label for="nombre">Nombre:</label>
-            <input class="form-control form-control-lg" type="text" name="nombre" id="nombre"
-              placeholder="Introduce nombre cliente" autofocus>
-          </div>
-          <div class="col-md-4">
-            <label for="apellidos">Apellidos:</label>
-            <input class="form-control form-control-lg" type="text" name="apellidos" id="apellidos"
-              placeholder="Introduce los apellidos del cliente">
-          </div>
-          <div class="col-md-4">
-            <label for="telefono">Teléfono:</label>
-            <input class="form-control form-control-lg" type="text" name="telefono" id="telefono"
-              placeholder="Introduce el telefono">
-          </div>
-        </div>
-        <hr>
-        <div class="row">
-          <div class="col-md-4">
-            <label for="fecha">Fecha:</label>
-            <input class="form-control form-control-lg" type="date" name="fecha" id="fecha"
-              placeholder="Introduce la fecha">
-          </div>
-          <div class="col-md-4">
-            <label for="fecha">Hora:</label>
-            <input class="form-control form-control-lg" type="time" name="fecha" id="fecha"
-              placeholder="Introduce la fecha">
-          </div>
-          <div class="col-md-4">
-            <label for="comensales">Comensales:</label>
-            <select class="form-control form-control-lg">
-              <option>1</option>
-              <option>2</option>
-              <option>3</option>
-              <option>4</option>
-              <option>5</option>
-              <option>6</option>
-              <option>7</option>
-              <option>8</option>
-              <option>9</option>
-              <option>10</option>
-            </select>
-          </div>
-        </div>
-        <hr>
-        <div class="row">
-          <div class="col-md-12">
-            <label for="comentario">Comentarios:</label>
-            <textarea class="form-control" id="comentario" rows="3" maxlength="300"
-              onkeyup="cantidadCaracteres(this)"></textarea>
-            <div id="contadorCaracteres" class="text-monospace text-muted text-right" style="font-size: 0.9em;"></div>
-          </div>
-        </div>
-      </div>
-      <div class="card-footer">
-      </div>
-    </div>
+  <div class="container mt-4">
 
-    <!--Tabla Reservas-->
-    <div class="row mt-5 mb-5">
-      <div class="col-md-12">
+    <div class="row ">
+      <div class="col-md-4">
+        <div class="card">
+          <div class="card-header">
+            <h3>Gestión de reservas</h3>
+          </div>
+          <div class="card-body">
+            <input type="hidden" name="idReserva" id="idReserva">
+            <div class="row">
+              <div class="btn-group-sm col-md-12 my-2">
+                <button class="btn btn-outline-info" onclick="consultarReserva();"><i
+                    class="fa fa-file pr-2"></i>Consultar</button>
+                <button class="btn btn-outline-info" onclick="guardarReserva();"><i
+                    class="fa fa-save pr-2"></i>Guardar</button>
+                <button class="btn btn-outline-info" onclick="modificarReserva();"><i
+                    class="fa fa-edit pr-2"></i>Modificar</button>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <label for="nombre">Nombre:</label>
+                <input class="form-control form-control-lg mb-2" type="text" name="nombre" id="nombre"
+                  placeholder="Introduce nombre cliente" autofocus>
+                <label for="apellidos">Apellidos:</label>
+                <input class="form-control form-control-lg mb-2" type="text" name="apellidos" id="apellidos"
+                  placeholder="Introduce los apellidos del cliente">
+                <label for="telefono">Teléfono:</label>
+                <input class="form-control form-control-lg mb-2" type="text" name="telefono" id="telefono"
+                  placeholder="Introduce el telefono">
+                <label for="fecha">Fecha:</label>
+                <input class="form-control form-control-lg mb-2" type="date" name="fecha" id="fecha"
+                  placeholder="Introduce la fecha">
+                <label for="hora">Hora:</label>
+                <input class="form-control form-control-lg mb-2" type="time" name="hora" id="hora"
+                  placeholder="Introduce la hora">
+                <label for="comensales">Comensales:</label>
+                <input class="form-control form-control-lg mb-2" type="text" name="comensales" id="comensales"
+                  placeholder="Introduce la comensales">
+                <!--<select class="form-control form-control-lg">
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+                <option>4</option>
+                <option>5</option>
+                <option>6</option>
+                <option>7</option>
+                <option>8</option>
+                <option>9</option>
+                <option>10</option>
+                </select>-->
+                <label for="comentarios">Comentarios:</label>
+                <textarea class="form-control" id="comentarios" rows="3" maxlength="300"
+                  onkeyup="cantidadCaracteres(this)"></textarea>
+                <div id="contadorCaracteres" class="text-monospace text-muted text-right" style="font-size: 0.9em;">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-8">
+        <!--Tabla Reservas-->
         <div class="card">
           <div class="card-header">
             <div class="row">
@@ -122,33 +122,23 @@
               <thead class="thead-dark">
                 <tr>
                   <th>Nombre y Apellidos</th>
-                  <th>Teléfono</th>
                   <th>Fecha y Hora</th>
-                  <th>Comensales</th>
+                  <th>Users</th>
                   <th>Acciones</th>
                 </tr>
               </thead>
-              <tbody id="tablaReservas">
+              <tbody id="datosReservas">
                 <tr>
-                  <td>Nombre Apellido1 Apellido 2</td>
-                  <td>000000000</td>
+                  <td>Nombre Apellido1 Apellido 2 <br>Tel: 0000000000</td>
                   <td>10/04/2020 - 11:00</td>
                   <td>4</td>
                   <td>
-                    <button id="" type="button" class="btn btn-primary" data-toggle="modal"
-                      data-target="#modalReserva">Ver</button>
-                    <button id="" type="button" class="btn btn-danger">Eliminar</button>
-                  </td>
-                </tr>
-                <tr>
-                  <td>Nombre Apellido1 Apellido 2</td>
-                  <td>000000000</td>
-                  <td>10/04/2020 - 11:00</td>
-                  <td>4</td>
-                  <td>
-                    <button id="" type="button" class="btn btn-primary" data-toggle="modal"
-                      data-target="#modalReserva">Ver</button>
-                    <button id="" type="button" class="btn btn-danger">Eliminar</button>
+                    <button id="" class="btn btn-primary" type="button" data-toggle="modal"
+                    data-target="#modalReserva" onclick="consultarReserva();"><i
+                      class="fa fa-eye pr-2"></i></button>
+
+                    <button id="" class="btn btn-danger" type="button" onclick="eliminarReserva();"><i
+                      class="fa fa-tasks pr-2"></i></button>
                   </td>
                 </tr>
               </tbody>
@@ -160,11 +150,13 @@
   </div>
 
   <!--JAVASCRIPT-->
+  <script src="../scripts/reserva.js"></script>
+
   <script>
 
     //Retraso carga
     $(document).ready(function () {
-      //--------
+      consultarReservas();
     });
 
 

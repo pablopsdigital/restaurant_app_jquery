@@ -1,6 +1,6 @@
 <?php
 
-    require '../models/reservaModelo.php';
+    require '../models/reservaModel.php';
 
     //Se recogen los datos en POST
     if($_POST){
@@ -16,6 +16,7 @@
             break;
 
             case "consultarReserva":
+                $id = $_POST["id"];
                 echo json_encode($reserva->consultarReserva($id));
             break;
 
@@ -34,8 +35,9 @@
                 $comentarios = $_POST["comentarios"];
 
                 //Se guarda la nueva reserva
-                $reserva->guardarReserva($nombre, $apellidos, $telefono, $fecha, $hora, $comensales, $comentarios);
+                $respuesta = $reserva->guardarReserva($nombre, $apellidos, $telefono, $fecha, $hora, $comensales, $comentarios);
                 echo json_encode($respuesta);
+
             break;
 
             case "modificarReserva":
@@ -50,11 +52,12 @@
                 $comentarios = $_POST["comentarios"];
 
                 //Se guarda la nueva reserva
-                $reserva->modificarReserva($id, $nombre, $apellidos, $telefono, $fecha, $hora, $comensales, $comentarios);
+                $respuesta = $reserva->modificarReserva($id, $nombre, $apellidos, $telefono, $fecha, $hora, $comensales, $comentarios);
                 echo json_encode($respuesta);
             break;
 
             case "eliminarReserva":
+                $id = $_POST["id"];
                 echo json_encode($reserva->eliminarReserva($id));
             break;
 
