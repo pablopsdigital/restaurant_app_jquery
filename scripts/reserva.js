@@ -27,17 +27,11 @@ function consultarReservas() {
         html += "<td>" + data.comensales + "</td>";
         html += "<td>";
         html +=
-          "<button class='btn btn-danger mx-2 btnAbrirModalEliminar' type='button' data-toggle='modal' data-target='#modalEliminar' data-id-reserva='" +
-          data.id +
-          "';><i class='fa fa-trash'></i></button>";
+          "<button class='btn btn-danger mx-2 btnAbrirModalEliminar' type='button' data-toggle='modal' onclick='eliminarReserva(" + data.id + ");'><i class='fa fa-trash'></i></button>";
         html +=
-          "<button class='btn btn-warning mx-2' type='button' data-toggle='modal' data-target='#modalInfoReserva' onclick='consultarReserva(" +
-          data.id +
-          ");'><i class='fa fa-eye'></i></button>";
+          "<button class='btn btn-warning mx-2' type='button' data-toggle='modal' data-target='#modalInfoReserva' onclick='consultarReserva(" +data.id + ");'><i class='fa fa-eye'></i></button>";
         html +=
-          "<button class='btn btn-primary mx-2' type='button' data-toggle='modal' data-target='#modalReserva' onclick='consultarReserva(" +
-          data.id +
-          ");'><i class='fa fa-pencil-square'></i></button>";
+          "<button class='btn btn-primary mx-2' type='button' data-toggle='modal' data-target='#modalReserva' onclick='consultarReserva(" + data.id + ");'><i class='fa fa-pencil-square'></i></button>";
         html += "</td>";
         html += "</tr>";
       });
@@ -126,11 +120,6 @@ function consultarReservas24horas() {
 
 
 
-function mostrarError(campo){
-    $('#' + campo).css({
-        border: "2px solid #dd5144"
-    })
-}
 
 
 //====================================================================================================================================
@@ -143,24 +132,11 @@ function guardarReserva() {
   var fecha = document.getElementById("fecha").value;
   var hora = document.getElementById("hora").value;
   //var comensales = $("#comensalesOptions").children("option:selected").val();
-  var comensales = $("#comensalesOptions option:selected").text();
+  var comensales = $("#comensales option:selected").text();
 
   //var comensalesElement = document.getElementById('comensalesOptions');
   //var comensales = comensalesElement.options[comensalesElement.selectedIndex].text;
   var comentarios = document.getElementById("comentarios").value;
-
-  //Realizar validación antes de enviar al servidor
-  //validarCamposFormulario()
-  if(nombre ==""|| nombre==null){
-      mostrarError(nombre);
-  }
-
-
-
-
-
-
-
 
   $.ajax({
     url: "../controllers/reservaController.php",
@@ -181,7 +157,7 @@ function guardarReserva() {
       if (res == "OK") {
         //alert("Los datos de la reserva se han modificado con éxito.");
         limpiarCamposRefrescar();
-       $("#modalReserva").modal("toggle");
+        $("#modalReserva").modal("toggle");
       } else {
         alert(res);
       }
