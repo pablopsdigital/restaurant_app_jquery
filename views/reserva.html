@@ -1,3 +1,7 @@
+<!--Ejercicio para la practica final de Programación Web
+para la realización del ejercicio se ha utilizado una plantilla de estilos css sb-admin-2.css
+Adicionalmente se ha intentado minimizar el uso de librerias que faciliten el empleo de datapickers, validación de campos
+con al intención de ceñirse en la medida de lo posible a la libreria jquery-->
 <!DOCTYPE html>
 <html lang="es">
 
@@ -52,7 +56,7 @@
         <div class="container-lg">
 
           <!--Encabezado-->
-          <h1 class="h3 mb-2 text-gray-800">Reservas</h1>
+          <h1 class="h3 mb-2 text-gray-800">Reservas - Práctica JQuery Pablo Pérez Sineiro</h1>
           <p class="mb-4">A continuación se presenta una lista de reservas.</p>
           <!--Fin encabezados-->
 
@@ -70,18 +74,18 @@
 
               <div class="mx-2">
                 <div class="row py-4">
-                  <div class="col-md-3">
+                  <div class="col-md-2">
                     <input class="form-control" id="campoBusqueda" type="text" placeholder="Buscar..">
                   </div>
-                  <div class="col-md-2 text-center">
+                  <div class="col-md-3 text-center">
                     <div class="totalReservas d-inline-flex p-2">Reservas Totales: <span id="registrosTabla"></span></div>
                   </div>
                   <div class="col-md-3 text-center">
                     <div class="totalReservas d-inline-flex p-2">Reservas proximas 24h: <span id="registrosTabla24h"></span></div>
                   </div>
-                  <div class="col-md-4 text-right">
+                  <div class="col-md-3 text-right">
                     <button id="" class="btn btn-primary" type="button" data-toggle='modal'
-                      data-target='#modalReserva'><i class="fa fa-calendar-plus-o pr-2"></i>Nueva Reserva</button>
+                      data-target='#modalReserva' onclick="limpiarCamposRefrescar()"><i class="fa fa-calendar-plus-o pr-2"></i>Nueva Reserva</button>
                   </div>
                 </div>
               </div>
@@ -111,7 +115,7 @@
                   <li class="nav-item">
                     <a class="nav-link waves-light" id="tituloReservas24Horas" data-toggle="tab"
                       href="#pestanaReservas24Horas" role="tab" aria-controls="pestanaReservas24Horas"
-                      aria-selected="false">No existe reservas para las próximas 24 horas</a>
+                      aria-selected="false">mensaje</a>
                   </li>
                 </ul>
 
@@ -141,13 +145,7 @@
                                 <td>10/04/2020 - 11:00</td>
                                 <td>4</td>
                                 <td>
-                                  <button id="" class="btn btn-primary" type="button" data-toggle="modal"
-                                    data-target="#modalReserva" onclick="consultarReserva();"><i
-                                      class="fa fa-eye pr-2"></i></button>
-                                  <button id="" class="btn btn-danger" type="button" onclick="eliminarReserva();"><i
-                                      class="fa fa-tasks pr-2"></i></button>
-                                  <button id="" class="btn btn-success" type="button" onclick="consultarReserva();"><i
-                                      class="fa fa-pencil-square pr-2"></i></button>
+                                  <!--Botones-->
                                 </td>
                               </tr>
                             </tbody>
@@ -161,11 +159,37 @@
                   <!--Tabla reservas totales-->
 
                   <!--Tabla reservas próximas 24 horas-->
-                  <div class="tab-pane fade" id="pestanaReservas24Horas" role="tabpanel"
-                    aria-labelledby="follow-tab-classic-shadow">
-                    <!--Tabla Reservas-->
-                    <h1>tabla2</h1>
-                    <!--Fin tabla Reservas-->
+                  <div class="tab-pane fade" id="pestanaReservas24Horas" role="tabpanel" aria-labelledby="follow-tab-classic-shadow">
+                    
+                    <!--Tabla Reservas 24 horas-->
+                    <div class="table">
+                      <div class="row py-4">
+                        <div class="col-sm-12">
+                          <table class="table table-bordered table-striped table-sm" id="tablaReservas" width="100%"
+                            cellspacing="0">
+                            <thead>
+                              <tr>
+                                <th class="th-sm" style="width: 50%">Nombre y Apellidos</th>
+                                <th class="th-sm" style="width: 30%">Fecha y Hora</th>
+                                <th class="th-sm">Comensales</th>
+                                <th class="th-sm" style="width: 30%">Acciones</th>
+                              </tr>
+                            </thead>
+                            <tbody id="datosReservas24horas">
+                              <tr>
+                                <td>Nombre Apellido1 Apellido 2 <br>Tel: 0000000000</td>
+                                <td>10/04/2020 - 11:00</td>
+                                <td>4</td>
+                                <td>
+                                  <!--Botones-->
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    </div>
+                    <!--Fin tabla Reservas 24 horas -->
 
                   </div>
                   <!--Fin tabla reservas próximas 24 horas-->
@@ -223,7 +247,7 @@
                     </div>
                     <div class="col-md-2">
                       <label for="hora">Hora:</label>
-                      <input class="form-control form-control-lg mb-2" type="time" name="hora" id="hora" placeholder="Introduce la hora" value="13:00">
+                      <input class="form-control form-control-lg mb-2" type="time" name="hora" id="hora" placeholder="Introduce la hora" value="00:00">
                     </div>
                     <div class="col-md-2">
                       <label for="comensales">Comensales: (max.10)</label>
@@ -282,45 +306,25 @@
 
     //Retraso carga
     $(document).ready(function () {
-
-
       //Cargar resultados iniciales
-      //consultarReservas24horas();
+      consultarReservas();
       consultarReservas24horas();
       consultarNumeroReservas24horas();
       limpiarErrores();
       totalReservas();
-
       horaActual();
       fechaActual();
-      //$(':input').on('keydown', validarCampos());
-      // //Filtro campo búsqueda
-      // filtroCampoBusqueda();
-
-      // //Boton scroll pie página
-      // botonScroll();
-      // animacionScroll();
-
-      // //Contador caracteres comentarios
-      // cantidadCaracteres();
-      // limpiar();
-
-
+      filtroCampoBusqueda();
     });
-
-
-
 
   //Validación formulario
   $('#formulario-guardar').submit(function(event) {
+    limpiarMensajesErrorFormulario();
     event.preventDefault();
     if(validarFormulario()==true){
       guardarReserva();
     }
   });
-
-
-
 
   </script>
 
