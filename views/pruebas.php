@@ -25,9 +25,19 @@
     //$reserva->modificarReserva( 25, 'EstaModificado', 'ffff gondar', '987654364','2020-04-02','10:00:00', 3 ,'asdfasdfas');
     //$reserva->eliminarReserva(22);
 
-    echo '<pre>';
-    print_r($reserva->consultarReserva(1));
-    echo '</pre>';
+    // echo '<pre>';
+    // print_r($reserva->consultarReserva(1));
+    // echo '</pre>';
+
+    //consultarReservas24horas
+    // $listadoReservas = $reserva->consultarReservas24horas();
+    // foreach ($listadoReservas as $item){
+    //     echo("<p> 24HORAS: ".$item->nombre. "- ". $item->fecha."</p>");
+    // }
+
+    $listadoReservas = $reserva->consultarNumeroReservas24horas();
+    echo json_decode($listadoReservas);
+    
 
 
 

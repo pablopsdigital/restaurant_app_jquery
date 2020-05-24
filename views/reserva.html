@@ -19,6 +19,7 @@
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
   <script src="../scripts/reserva.js"></script>
   <script src="../scripts/validacion.js"></script>
+  <script src="../scripts/utilidades.js"></script>
 
 </head>
 
@@ -69,11 +70,14 @@
 
               <div class="mx-2">
                 <div class="row py-4">
-                  <div class="col-md-4">
+                  <div class="col-md-3">
                     <input class="form-control" id="campoBusqueda" type="text" placeholder="Buscar..">
                   </div>
-                  <div class="col-md-4 text-center">
-                    <h5>Total reservas: <span id="registrosTabla">333</span></h5>
+                  <div class="col-md-2 text-center">
+                    <div class="totalReservas d-inline-flex p-2">Reservas Totales: <span id="registrosTabla"></span></div>
+                  </div>
+                  <div class="col-md-3 text-center">
+                    <div class="totalReservas d-inline-flex p-2">Reservas proximas 24h: <span id="registrosTabla24h"></span></div>
                   </div>
                   <div class="col-md-4 text-right">
                     <button id="" class="btn btn-primary" type="button" data-toggle='modal'
@@ -82,18 +86,31 @@
                 </div>
               </div>
 
+              <!--Alerta-->
+              <div class="mx-2">
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="alert alert-success collapse" role="alert">
+                      <button class="close" data-dismiss="alert"><span>&times;</span></button>
+                      This is a primary alert—check it out!
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!--Fin de alerta-->
+
               <!--Pestañas-->
               <div class="classic-tabs mx-2">
 
                 <ul class="nav nav-tabs " id="tablaReservas" role="tablist">
                   <li class="nav-item">
-                    <a class="nav-link  waves-light active show" id="profile-tab-classic-shadow" data-toggle="tab"
-                      href="#profile-classic-shadow" role="tab" aria-controls="profile-classic-shadow"
+                    <a class="nav-link  waves-light active show" id="tituloReservas" data-toggle="tab"
+                      href="#pestanaReservas" role="tab" aria-controls="pestanaReservas"
                       aria-selected="true">Reservas</a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link waves-light" id="tablaReservas24Horas" data-toggle="tab"
-                      href="#follow-classic-shadow" role="tab" aria-controls="follow-classic-shadow"
+                    <a class="nav-link waves-light" id="tituloReservas24Horas" data-toggle="tab"
+                      href="#pestanaReservas24Horas" role="tab" aria-controls="pestanaReservas24Horas"
                       aria-selected="false">No existe reservas para las próximas 24 horas</a>
                   </li>
                 </ul>
@@ -102,7 +119,7 @@
                 <div class="tab-content">
 
                   <!--Tabla reservas totales-->
-                  <div class="tab-pane fade active show" id="profile-classic-shadow">
+                  <div class="tab-pane fade active show" id="pestanaReservas">
 
                     <!--Tabla Reservas-->
                     <div class="table">
@@ -114,7 +131,7 @@
                               <tr>
                                 <th class="th-sm" style="width: 50%">Nombre y Apellidos</th>
                                 <th class="th-sm" style="width: 30%">Fecha y Hora</th>
-                                <th class="th-sm">Users</th>
+                                <th class="th-sm">Comensales</th>
                                 <th class="th-sm" style="width: 30%">Acciones</th>
                               </tr>
                             </thead>
@@ -129,7 +146,7 @@
                                       class="fa fa-eye pr-2"></i></button>
                                   <button id="" class="btn btn-danger" type="button" onclick="eliminarReserva();"><i
                                       class="fa fa-tasks pr-2"></i></button>
-                                  <button id="" class="btn btn-success" type="button" onclick="eliminarReserva();"><i
+                                  <button id="" class="btn btn-success" type="button" onclick="consultarReserva();"><i
                                       class="fa fa-pencil-square pr-2"></i></button>
                                 </td>
                               </tr>
@@ -144,7 +161,7 @@
                   <!--Tabla reservas totales-->
 
                   <!--Tabla reservas próximas 24 horas-->
-                  <div class="tab-pane fade" id="follow-classic-shadow" role="tabpanel"
+                  <div class="tab-pane fade" id="pestanaReservas24Horas" role="tabpanel"
                     aria-labelledby="follow-tab-classic-shadow">
                     <!--Tabla Reservas-->
                     <h1>tabla2</h1>
@@ -170,10 +187,10 @@
 
         <!--Modal guardar/modificar reserva-->
         <div id="modalReserva" class="modal" tabindex="-1" role="dialog">
-          <div class="modal-dialog modal-lg" role="document">
+          <div class="modal-dialog modal-xl" role="document">
             <div class="modal-content">
               <div class="modal-header">
-                <h5 class="modal-title">Reserva</h5>
+                <h5 class="modal-title">Nueva Reserva</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
                 </button>
@@ -186,51 +203,31 @@
                       <label for="nombre">Nombre:</label>
                       <input class="form-control form-control-lg mb-2" type="text" name="nombre" id="nombre"
                         placeholder="Introduce nombre cliente" autofocus>
-                      <div class="invalid-feedback">Por favor introduce un nombre válido.</div>
                     </div>
                     <div class="col-md-6">
                       <label for="apellidos">Apellidos:</label>
                       <input class="form-control form-control-lg mb-2" type="text" name="apellidos" id="apellidos"
                         placeholder="Introduce los apellidos del cliente">
-                      <div class="invalid-feedback">Por favor introduce apellidos válidos.</div>
-                    </div>
+                      </div>
                   </div>
                   <hr>
                   <div class="row">
-                    <div class="col-md-3">
+                    <div class="col-md-4">
                       <label for="telefono">Teléfono:</label>
                       <input class="form-control form-control-lg mb-2" type="text" name="telefono" id="telefono"
-                        placeholder="Introduce el telefono">
-                      <div class="invalid-feedback">Por favor introduce un teléfono válido.</div>
+                        placeholder="+34 000 000 000">
                     </div>
                     <div class="col-md-4">
                       <label for="fecha">Fecha:</label>
-                      <input class="form-control form-control-lg mb-2" type="date" name="fecha" id="fecha"
-                        placeholder="Introduce la fecha">
-                      <div class="invalid-feedback">Por favor introduce una fecha válida, recuerda que no se pueden
-                        realizar reservas en el mismo día</div>
-                    </div>
-                    <div class="col-md-3">
-                      <label for="hora">Hora:</label>
-                      <input class="form-control form-control-lg mb-2" type="time" name="hora" id="hora"
-                        placeholder="Introduce la hora">
-                      <div class="invalid-feedback">Por favor introduce una hora válida.</div>
+                      <input class="form-control form-control-lg mb-2" type="date" name="fecha" id="fecha">
                     </div>
                     <div class="col-md-2">
-                      <label for="comensales">Comensales:</label>
-                      <select id="comensales" class="form-control form-control-lg">
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                        <option value="5">5</option>
-                        <option value="6">6</option>
-                        <option value="7">7</option>
-                        <option value="8">8</option>
-                        <option value="9">9</option>
-                        <option value="10">10</option>
-                      </select>
-                      <div class="invalid-feedback">Por favor selecciona el número de comensales.</div>
+                      <label for="hora">Hora:</label>
+                      <input class="form-control form-control-lg mb-2" type="time" name="hora" id="hora" placeholder="Introduce la hora" value="13:00">
+                    </div>
+                    <div class="col-md-2">
+                      <label for="comensales">Comensales: (max.10)</label>
+                      <input class="form-control form-control-lg mb-2" type="number" name="comensales" id="comensales" placeholder="1" value="1">
                     </div>
                   </div>
                   <hr>
@@ -246,93 +243,17 @@
                   </div>
                 </div>
                 <div class="modal-footer">
-                  <input class="btn btn-primary" type="submit" value="Guardar" class="hidden">
+                  <input id="botonGuardarModalReserva"class="btn btn-primary" type="submit" value="Guardar" class="hidden">
                   <!--<button class="btn btn-primary" onclick="guardarReserva();"><i
                       class="fa fa-save pr-2"></i>Guardar</button>-->
-                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                  <button id="botonCancelarModalReserva" type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
                 </div>
               </form>
             </div>
           </div>
         </div>
         <!--Fin de modal guardar/modificar reserva-->
-
-        <!--Modal info reserva-->
-        <div id="modalInfoReserva" class="modal" tabindex="-1" role="dialog">
-          <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title">Reserva</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-              <div class="modal-body p-4">
-                <input type="hidden" name="idReserva" id="idReserva">
-                <div class="row">
-                  <div class="col-md-6">
-                    <label for="nombre">Nombre:</label>
-                    <input class="form-control form-control-lg mb-2" type="text" name="nombre" id="info_nombre"
-                      placeholder="Introduce nombre cliente" autofocus>
-                  </div>
-                  <div class="col-md-6">
-                    <label for="apellidos">Apellidos:</label>
-                    <input class="form-control form-control-lg mb-2" type="text" name="apellidos" id="info_apellidos"
-                      placeholder="Introduce los apellidos del cliente">
-                  </div>
-                </div>
-                <hr>
-                <div class="row">
-                  <div class="col-md-3">
-                    <label for="telefono">Teléfono:</label>
-                    <input class="form-control form-control-lg mb-2" type="text" name="telefono" id="info_telefono"
-                      placeholder="Introduce el telefono">
-                  </div>
-                  <div class="col-md-4">
-                    <label for="fecha">Fecha:</label>
-                    <input class="form-control form-control-lg mb-2" type="date" name="fecha" id="info_fecha"
-                      placeholder="Introduce la fecha">
-                  </div>
-                  <div class="col-md-3">
-                    <label for="hora">Hora:</label>
-                    <input class="form-control form-control-lg mb-2" type="time" name="hora" id="info_hora"
-                      placeholder="Introduce la hora">
-                  </div>
-                  <div class="col-md-2">
-                    <label for="comensales">Comensales:</label>
-                    <select class="form-control form-control-lg">
-                      <option>1</option>
-                      <option>2</option>
-                      <option>3</option>
-                      <option>4</option>
-                      <option>5</option>
-                      <option>6</option>
-                      <option>7</option>
-                      <option>8</option>
-                      <option>9</option>
-                      <option>10</option>
-                    </select>
-                  </div>
-                </div>
-                <hr>
-                <div class="row">
-                  <div class="col-md-12">
-                    <label for="comentarios">Comentarios:</label>
-                    <textarea class="form-control" id="info_comentarios" rows="3" maxlength="300"
-                      onkeyup="cantidadCaracteres(this)"></textarea>
-                    <div id="contadorCaracteres" class="text-monospace text-muted text-right" style="font-size: 0.9em;">
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-              </div>
-            </div>
-          </div>
-        </div>
-        <!--Fin de modal edición reserva-->
-
+        
       </div>
       <!--Fin content-->
 
@@ -362,131 +283,44 @@
     //Retraso carga
     $(document).ready(function () {
 
-      //Cargar resultados iniciales
-      consultarReservas();
 
-      //Filtrar tabla por campo busqueda
-      $("#campoBusqueda").on("keyup", function () {
-        var value = $(this).val().toLowerCase();
-        $("#tablaReservas tr").filter(function () {
-          $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-        });
-      });
+      //Cargar resultados iniciales
+      //consultarReservas24horas();
+      consultarReservas24horas();
+      consultarNumeroReservas24horas();
+      limpiarErrores();
+      totalReservas();
+
+      horaActual();
+      fechaActual();
+      //$(':input').on('keydown', validarCampos());
+      // //Filtro campo búsqueda
+      // filtroCampoBusqueda();
+
+      // //Boton scroll pie página
+      // botonScroll();
+      // animacionScroll();
+
+      // //Contador caracteres comentarios
+      // cantidadCaracteres();
+      // limpiar();
+
 
     });
+
 
 
 
   //Validación formulario
-  $('#formulario-guardar').submit(function() {
-
+  $('#formulario-guardar').submit(function(event) {
     event.preventDefault();
-
-    //comparar fechas
-    var fechaActual = new Date();
-
-    var fecha = document.getElementById("fecha").value; //0000-00-00
-    var hora = document.getElementById("hora").value; //00:00
-
-    var fechaHora = fecha + " " + hora;
-    var fechaParse = Date.parse(fechaHora)
-    var fechaReserva = new Date(fechaParse);
-
-    alert("Fecha creada: " + fechaReserva);
-    alert("Fecha actual: " + fechaActual);
-    alert ("resta: " + ((fechaReserva - fechaActual)/(1000*60*60*24)));
-    if (fechaReserva - fechaActual > 24){
-    alert ("La fecha introducida es anterior a Hoy");
+    if(validarFormulario()==true){
+      guardarReserva();
     }
-
-
-
-
-
-
-    //Validar nombre
-      var nombre = $( "#nombre" );
-      if (nombre.val() == "null" || nombre.val() == "") {
-        $(nombre).after('<div class="errorText">Introduce un nombre válido</div>');
-        $(nombre).addClass("errorInput");
-      } else{
-        $('#nombre + div' ).hide();
-        $('#nombre').removeClass("errorInput");
-      }
-
-      $("#nombre").keyup(function () {
-        $('#nombre + div' ).hide();
-        $('#nombre').removeClass("errorInput");
-      });
-
-      //Validar apellidos
-      var apellidos = $( "#apellidos" ).val();
-      if (apellidos == "null" || apellidos == "") {
-        $('#apellidos').after('<div class="errorText">Introduce unos apellidos válidos</div>');
-        $('#apellidos').addClass("errorInput");
-      }
-
-      //Validar apellidos
-      var telefono = $( "#telefono" ).val();
-      if (telefono == "null" || telefono == "") {
-        $('#telefono').after('<div class="errorText">Introduce un teléfono vádido</div>');
-        $('#telefono').addClass("errorInput");
-      }
-
-      //Validar apellidos
-      var fecha = $( "#apellidos" ).val();
-      if (fecha == "null" || fecha == "") {
-        $('#fecha').after('<div class="errorText">Introduce una fecha válida</div>');
-        $('#fecha').addClass("errorInput");
-      }
-
-
-      //Validar apellidos
-      var fecha = $( "#apellidos" ).val();
-      if (fecha == "null" || fecha == "") {
-        $('#fecha').after('<div class="errorText">Introduce una fecha válida</div>');
-        $('#fecha').addClass("errorInput");
-      }
-
-      //guardarReserva();
-
-
-
   });
 
 
-    //Función contador caracteres campo text area
-    function cantidadCaracteres(numeroLetrasActual) {
-      $("#comentarios").keyup(function () {
-        $("#contadorCaracteres").text($(this).val().length + "/300");
-      });
-    }
 
-    //Aparecer boton de subir al bajar el scroll
-    $(document).on('scroll', function () {
-      var scrollDistance = $(this).scrollTop();
-      if (scrollDistance > 100) {
-        $('.scroll-to-top').fadeIn();
-      } else {
-        $('.scroll-to-top').fadeOut();
-      }
-    });
-
-    //Animación scroll al pulsar el boton subir
-    $(document).on('click', 'a.scroll-to-top', function (e) {
-      var $anchor = $(this);
-      $('html, body').stop().animate({
-        scrollTop: ($($anchor.attr('href')).offset().top)
-      }, 1000, 'easeInOutExpo');
-      e.preventDefault();
-    });
-
-
-    //Función para contar el número de resultados ofrecidos
-    function actulizarContadorRegistros() {
-      var $resultadosTabla = $('#tablaReservas tr').length - 1;
-      $("#registrosTabla").text($resultadosTabla);
-    }
 
   </script>
 

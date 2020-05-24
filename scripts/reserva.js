@@ -29,14 +29,13 @@ function consultarReservas() {
         html +=
           "<button class='btn btn-danger mx-2 btnAbrirModalEliminar' type='button' data-toggle='modal' onclick='eliminarReserva(" + data.id + ");'><i class='fa fa-trash'></i></button>";
         html +=
-          "<button class='btn btn-warning mx-2' type='button' data-toggle='modal' data-target='#modalInfoReserva' onclick='consultarReserva(" +data.id + ");'><i class='fa fa-eye'></i></button>";
-        html +=
           "<button class='btn btn-primary mx-2' type='button' data-toggle='modal' data-target='#modalReserva' onclick='consultarReserva(" + data.id + ");'><i class='fa fa-pencil-square'></i></button>";
         html += "</td>";
         html += "</tr>";
       });
 
       document.getElementById("datosReservas").innerHTML = html;
+      totalReservas();
     })
     .fail(function (res) {
       console.log("ERROR: en metodo consultarReservas: " + res);
@@ -48,7 +47,7 @@ function consultarReservas() {
 //====================================================================================================================================
 function consultarReserva(idReserva) {
   $.ajax({
-    url: "../controllers/reservaController.php",
+    url: url,
     type: "POST",
     data: {
       id: idReserva,
@@ -79,7 +78,7 @@ function consultarReservas24horas() {
   $.ajax({
     url: url,
     type: "POST",
-    data: { tarea: "consultarReservas" },
+    data: { tarea: "consultarReservas24horas" },
     dataType: "json",
   })
     .done(function (res) {
@@ -98,23 +97,47 @@ function consultarReservas24horas() {
         html += "<td>" + data.comensales + "</td>";
         html += "<td>";
         html +=
-          "<button class='btn btn-danger mx-2' type='button' data-toggle='modal' data-target='#modalEliminar'><i class='fa fa-trash'></i></button>";
+          "<button class='btn btn-danger mx-2 btnAbrirModalEliminar' type='button' data-toggle='modal' onclick='eliminarReserva(" + data.id + ");'><i class='fa fa-trash'></i></button>";
         html +=
-          "<button class='btn btn-warning mx-2' type='button' data-toggle='modal' data-target='#modalInfoReserva' onclick='consultarReserva(" +
-          data.id +
-          ");'><i class='fa fa-eye'></i></button>";
-        html +=
-          "<button class='btn btn-primary mx-2' type='button' data-toggle='modal' data-target='#modalReserva' onclick='consultarReserva(" +
-          data.id +
-          ");'><i class='fa fa-pencil-square'></i></button>";
+          "<button class='btn btn-primary mx-2' type='button' data-toggle='modal' data-target='#modalReserva' onclick='consultarReserva(" + data.id + ");'><i class='fa fa-pencil-square'></i></button>";
         html += "</td>";
         html += "</tr>";
       });
 
-      document.getElementById("datosReservas24").innerHTML = html;
+      document.getElementById("datosReservas").innerHTML = html;
+      totalReservas24horas();
     })
     .fail(function (res) {
-      console.log("ERROR: en metodo consultarReservas: " + res);
+      console.log("ERROR: en metodo consultarReservas24horas: " + res.telefono);
+    });
+}
+
+
+//====================================================================================================================================
+//
+//====================================================================================================================================
+function consultarNumeroReservas24horas() {
+  $.ajax({
+    url: url,
+    type: "POST",
+    data: { tarea: "consultarNumeroReservas24horas" },
+    dataType: "json",
+  })
+    .done(function (res) {
+      if(res!= null){
+        var numeroRegistros24h=parseInt(res);
+        if(numeroRegistros24h > 0){
+          totalReservas24horas(numeroRegistros24h);
+          $('#tituloReservas24Horas').text('Existen ' + numeroRegistros24h + ' reservas para las próximas 24 horas.')
+        }
+      }
+      console.log(res);
+
+
+
+    })
+    .fail(function (res) {
+      console.log("ERROR: en metodo consultarReservas24horas:" + res);
     });
 }
 
@@ -132,8 +155,8 @@ function guardarReserva() {
   var fecha = document.getElementById("fecha").value;
   var hora = document.getElementById("hora").value;
   //var comensales = $("#comensalesOptions").children("option:selected").val();
-  var comensales = $("#comensales option:selected").text();
-
+  //var comensales = $("#comensales option:selected").text();
+  var comensales = document.getElementById("comensales".value);
   //var comensalesElement = document.getElementById('comensalesOptions');
   //var comensales = comensalesElement.options[comensalesElement.selectedIndex].text;
   var comentarios = document.getElementById("comentarios").value;
@@ -155,6 +178,7 @@ function guardarReserva() {
   })
     .done(function (res) {
       if (res == "OK") {
+        mostrarAlerta('Nueva reserva creada con éxito.');
         //alert("Los datos de la reserva se han modificado con éxito.");
         limpiarCamposRefrescar();
         $("#modalReserva").modal("toggle");
@@ -219,53 +243,6 @@ function eliminarReserva(idReserva) {
     .fail(function (res) {
       console.log("ERROR: en metodo eliminarReserva: " + res);
     });
-}
-
-//====================================================================================================================================
-//
-//====================================================================================================================================
-function validarCamposFormulario() {
-  //Validación usando submit de jquery y validar:
-  //Fecha tiene que ser 24 hroas  más que la actual
-  //En campo comensales no puede ser superior a 10 (list)
-
-  var nombre = document.getElementById("nombre").value;
-  var apellidos = document.getElementById("apellidos").value;
-  var telefono = document.getElementById("telefono").value;
-  var fecha = document.getElementById("fecha").value;
-  var hora = document.getElementById("hora").value;
-  var comensales = document.getElementById("comensales").value;
-  var comentarios = document.getElementById("comentarios").value;
-
-  if (
-    nombre == "" ||
-    apellidos == "" ||
-    telefono == "" ||
-    fecha == "" ||
-    hora == "" ||
-    comensales == "" ||
-    comentarios == ""
-  ) {
-    return false;
-  } else {
-    return true;
-  }
-}
-
-//====================================================================================================================================
-//
-//====================================================================================================================================
-function limpiarCamposRefrescar() {
-  document.getElementById("nombre").value = "";
-  document.getElementById("apellidos").value = "";
-  document.getElementById("telefono").value = "";
-  document.getElementById("fecha").value = "";
-  document.getElementById("hora").value = "";
-  //document.getElementById('comensales').selectedIndex = 0;
-  $("#comensalesOptions").val("1");
-  document.getElementById("comentarios").value = "";
-
-  consultarReservas();
 }
 
 //====================================================================================================================================

@@ -21,7 +21,11 @@
             break;
 
             case "consultarReservas24horas";
-                echo json_encode($reserva->consultarReservas24horas($id));
+                echo json_encode($reserva->consultarReservas24horas());
+            break;
+
+            case "consultarNumeroReservas24horas";
+            echo json_encode($reserva->consultarNumeroReservas24horas());
             break;
 
             case "guardarReserva":

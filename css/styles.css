@@ -8,3 +8,11 @@
 .errorInput {
     border:2px solid #dd5144;
 }
+
+.totalReservas{
+    font-size: 16px;
+}
+
+.totalReservas>span{
+    font-weight: 700;
+}

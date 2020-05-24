@@ -94,7 +94,8 @@ class Reserva
 
         //Crear la conexion
         $conexion = new Conexion();
-        $statement = $conexion->prepare("SELECT * FROM reservas");
+        //$statement = $conexion->prepare("SELECT * FROM reservas");
+        $statement = $conexion->prepare("SELECT * FROM `reservas` WHERE fecha > CURDATE()");
         $statement->execute();
 
         return $statement->fetchAll(PDO::FETCH_OBJ);
@@ -108,10 +109,34 @@ class Reserva
 
         //Crear la conexion
         $conexion = new Conexion();
-        $statement = $conexion->prepare("SELECT * FROM 'reservas' WHERE fecha > DATE_SUB(CURDATE(), INTERVAL 1 DAY)");
+        $statement = $conexion->prepare("SELECT * FROM `reservas` WHERE fecha BETWEEN NOW() AND (NOW() + INTERVAL 24 HOUR)");
         $statement->execute();
+        $registrosTotales = $statement->rowCount();
 
-        return $statement->fetchAll(PDO::FETCH_OBJ);
+        if ($statement->execute()) {
+            return $statement->fetchAll(PDO::FETCH_OBJ);
+        } else {
+            return 'Error: no se ha podido almacenar la reserva';
+        }
+    }
+
+    //====================================================================================================================================
+    // Función para consultar si existen reservas para las próximas 24 horas
+    //====================================================================================================================================
+    public function consultarNumeroReservas24horas()
+    {
+
+        //Crear la conexion
+        $conexion = new Conexion();
+        $statement = $conexion->prepare("SELECT * FROM `reservas` WHERE fecha BETWEEN NOW() AND (NOW() + INTERVAL 24 HOUR)");
+        $statement->execute();
+        $registrosTotales = $statement->rowCount();
+
+        if ($statement->execute()) {
+            return $registrosTotales;
+        } else {
+            return 'Error: no se ha podido almacenar la reserva';
+        }
     }
 
     //====================================================================================================================================
