@@ -1,5 +1,5 @@
 //Ruta controlador
-var url = "../controllers/reservaController.php";
+var url = "./controllers/reservaController.php";
 
 //====================================================================================================================================
 //Función general consultar reservas
